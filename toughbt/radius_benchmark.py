@@ -8,7 +8,6 @@ import argparse,sys,os
 from txradius import client
 from txradius import message
 from txradius.radius import dictionary,packet
-import toughradius
 import functools
 import random
 import time
