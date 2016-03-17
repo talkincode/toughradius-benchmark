@@ -8,7 +8,7 @@ version = toughbt.__version__
 
 install_requires = [
     'Twisted>=14.0.0',
-    'toughbt'
+    'txradius'
 ]
 install_requires_empty = []
 
