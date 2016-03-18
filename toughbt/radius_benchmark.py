@@ -5,10 +5,10 @@ choosereactor.install_optimal_reactor(True)
 from twisted.internet import reactor
 from twisted.python import log
 import argparse,sys,os
-from txradius import client
+from toughbt import radiusclient
 from txradius import message
 from txradius.radius import dictionary,packet
-import functools
+import itertools
 import random
 import time
 reactor.suggestThreadPoolSize(60)
@@ -40,10 +40,13 @@ class AuthStatCounter:
     def get_result(self):
         result = []
         _sectimes = self.lasttime - self.starttime
+        if _sectimes <= 0:
+            return ''
         _percount = self.replys /(_sectimes < 0 and 0 or _sectimes)
         if self.max_per < _percount:
             self.max_per = _percount
         result.append("\n ###################################################")
+        result.append(" # Current datetime                  : %s"% time.ctime())
         result.append(" # Current sender request            : %s"% self.requests)
         result.append(" # Current received response         : %s"% self.replys)
         result.append(" # Current accepts response          : %s"% self.accepts)
@@ -64,28 +67,27 @@ def random_mac():
     return ':'.join(map(lambda x: "%02x" % x, mac))
 
 def auth_test(server,port,secret,requests,concurrency,username,password,verb=False,timeout=30):
-    raddict = dictionary.Dictionary(os.path.join(os.path.dirname(__file__),"dictionary"))
-    send_auth = functools.partial(client.send_auth,str(secret),raddict,server,port,debug=verb)
-
     stat_counter = AuthStatCounter()
+    raddict = dictionary.Dictionary(os.path.join(os.path.dirname(__file__),"dictionary"))
+    _clis = []
+    for c in range(concurrency):
+        _clis.append(radiusclient.RadiusClient(str(secret), raddict, server,port,debug=verb,stat_counter=stat_counter))
+    clis = itertools.cycle(_clis)
+
+    
 
     def chk_task():
         print "\n".join(stat_counter.get_result())
         if stat_counter.replys == requests:
             reactor.callLater(1.0,reactor.stop)
         else:
-            reactor.callLater(3.0,chk_task)
+            reactor.callLater(1.0,chk_task)
 
-    reactor.callLater(1.0,chk_task)
+    reactor.callLater(2.0,chk_task)
 
     for i in xrange(requests):
-        auth_req = {'User-Name' : username}
-        auth_req["NAS-Identifier"]     =  "toughradius-benchmark"
-        auth_req['User-Password'] = password
-        d = send_auth(timeout=timeout, **auth_req)
-        stat_counter.requests += 1
-        d.addCallbacks(stat_counter.plus,stat_counter.error)
-
+        radcli = next(clis)
+        radcli.sendAuth(**{'User-Name' : username,'User-Password':password})
 
 
 def exit(parser,status, msg=''):
@@ -112,13 +114,11 @@ def run():
         help='Radius testing password')
     parser.add_argument('-n', '--requests', type=int, default=1, dest='requests', 
         help='Number of requests to perform')
-    # parser.add_argument('-c', '--concurrency', type=float, default=1, dest='concurrency', 
-        # help='Number of multiple requests to make at a time')
+    parser.add_argument('-c', '--concurrency', type=int, default=10, dest='concurrency', 
+        help='Number of multiple requests to make at a time')
     parser.add_argument('-v', '--verbosity', action='store_true', default=False, dest='verbosity', 
         help='How much troubleshooting info to print')
-    parser.add_argument('-t', '--timeout', type=int, default=60, dest='timeout', 
-        help='Seconds to max. wait for each response')
-    parser.add_argument('-T', '--all_timeout', type=int, default=120, dest='all_timeout', 
+    parser.add_argument('-t', '--timeout', type=int, default=120, dest='timeout', 
         help='Seconds to max. wait for all response')
     parser.add_argument('-conf', '--conf', type=str, default='', dest='conf', help='Radius testing config file')
     args = parser.parse_args(sys.argv[1:])
@@ -133,9 +133,9 @@ def run():
 
 
         start_auth = lambda : auth_test(args.server,args.port,args.secret,
-                args.requests,0, args.username,args.password,args.verbosity,args.timeout)
+                args.requests,args.concurrency, args.username,args.password,args.verbosity,args.timeout)
         reactor.callLater(0.1,start_auth)
-        reactor.callLater(args.all_timeout,reactor.stop)
+        reactor.callLater(args.timeout,reactor.stop)
         reactor.run()
         print ('testing done!')
     else:
