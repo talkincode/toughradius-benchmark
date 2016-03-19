@@ -8,8 +8,9 @@ version = toughbt.__version__
 
 install_requires = [
     'six>=1.8.0',
-    'Twisted>=14.0.0',
-    'txradius'
+    'Twisted>=15.0.0',
+    'txradius',
+    'txzmq',
 ]
 install_requires_empty = []
 
@@ -38,7 +39,7 @@ setup(name='toughbt',
        ],
       packages=find_packages(),
       package_data=package_data,
-      keywords=['radius', 'AAA','authentication','accounting','authorization','toughradius'],
+      keywords=['radius', 'AAA','authentication','accounting','authorization','toughradius','benchmark'],
       zip_safe=True,
       include_package_data=True,
       scripts=["trbctl"],

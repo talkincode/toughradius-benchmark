@@ -1,0 +1,5 @@
+Twisted>=15.0.0
+pyzmq
+txzmq
+six>=1.8.0
+txradius
