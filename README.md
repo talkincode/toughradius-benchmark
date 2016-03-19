@@ -54,16 +54,12 @@ toughbt 是一个基于Python/twisted开发的 radius 服务性能测试工具�
 
 ## 示例
 
-    $ pypy trbctl --auth -m -u trbtest -p 888888 -n 10000 -c 100 -f 4 -i 5 -r 200 -t 1000
+    $ pypy trbctl --auth -m -u trbtest -p 888888 -n 10000 -c 100 -f 2 -i 5 -r 500 -t 1000
 
-    benckmark worker created! master pid - 78655, worker pid - 78659
-    benckmark worker created! master pid - 78655, worker pid - 78660
-    benckmark worker created! master pid - 78655, worker pid - 78661
-    benckmark worker created! master pid - 78655, worker pid - 78662
-    write worker 78660 log into /tmp/trbctl-worker-1.log
-    write worker 78659 log into /tmp/trbctl-worker-0.log
-    write worker 78661 log into /tmp/trbctl-worker-2.log
-    write worker 78662 log into /tmp/trbctl-worker-3.log
+    benckmark worker created! master pid - 78933, worker pid - 78937
+    benckmark worker created! master pid - 78933, worker pid - 78938
+    write worker 78938 log into /tmp/trbctl-worker-1.log
+    write worker 78937 log into /tmp/trbctl-worker-0.log
     ...........
     ...........
     ...........
@@ -81,26 +77,26 @@ toughbt 是一个基于Python/twisted开发的 radius 服务性能测试工具�
     - Raduius share secret              :  secret
     - Auth Request total                :  10000
     - Concurrency level                 :  100
-    - Worker Process num                :  4
+    - Worker Process num                :  2
     - All Requests timeout              :  1000 sec
     - Stat data interval                :  5 sec
-    - Send request rate                 :  200/sec
+    - Send request rate                 :  500/sec
     -
     - Time data statistics
     -
-    - Current stat datetime             :  Sat Mar 19 18:56:26 2016
+    - Current stat datetime             :  Sat Mar 19 19:09:54 2016
     - Current sent request              :  10000
     - Current received response         :  10000
-    - Current accepts response          :  9981
-    - Current rejects response          :  19
+    - Current accepts response          :  9992
+    - Current rejects response          :  8
     - Current error response            :  0
-    - Current requests per second       :  236.072818989, cast 1.12677097321 sec
-    - Current max requests per second   :  439.310067127, cast 5.01923394203 sec
-    - Current time per request          :  4.23598110228 ms
-    - Current min time per request      :  2.27629657235 ms
-    - Current max time per request      :  38.7394464933 ms
-    - Current Cast total seconds        :  31.2822549343 sec
-    ---------------------------------------------------------------------------------    
+    - Current requests per second       :  373.312449622, cast 3.75824594498 sec
+    - Current max requests per second   :  502.08186488, cast 5.01711010933 sec
+    - Current time per request          :  2.67872127226 ms
+    - Current min time per request      :  1.99170707 ms
+    - Current max time per request      :  35.0688480669 ms
+    - Current Cast total seconds        :  28.886922121 sec
+    --------------------------------------------------------------------------------- 
 
 
 
