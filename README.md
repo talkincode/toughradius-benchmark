@@ -54,7 +54,7 @@ toughbt 是一个基于Python/twisted开发的 radius 服务性能测试工具�
 
 ## 示例
 
-    $ pypy trbctl --auth -m -u trbtest -p 888888 -n 10000 -c 100 -f 2 -i 5 -r 500 -t 1000
+    $ trbctl --auth -m -u trbtest -p 888888 -n 10000 -c 100 -f 2 -i 5 -r 500 -t 1000
 
     benckmark worker created! master pid - 78933, worker pid - 78937
     benckmark worker created! master pid - 78933, worker pid - 78938
