@@ -12,7 +12,7 @@ toughbt 是一个基于Python/twisted开发的 radius 服务性能测试工具�
 
 ## 安装
 
-    pip install toughbt -r requirements.txt
+    pip install toughbt
 
 ## 使用说明
 
