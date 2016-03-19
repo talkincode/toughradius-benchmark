@@ -55,52 +55,52 @@ toughbt 是一个基于Python/twisted开发的 radius 服务性能测试工具�
 ## 示例
 
     $ pypy trbctl --auth -m -u trbtest -p 888888 -n 10000 -c 100 -f 4 -i 5 -r 200 -t 1000
-    2016-03-19 18:55:51+0800 [-] Log opened.
-    2016-03-19 18:55:51+0800 [-] benckmark worker created! master pid - 78655, worker pid - 78659
-    2016-03-19 18:55:51+0800 [-] benckmark worker created! master pid - 78655, worker pid - 78660
-    2016-03-19 18:55:51+0800 [-] benckmark worker created! master pid - 78655, worker pid - 78661
-    2016-03-19 18:55:51+0800 [-] benckmark worker created! master pid - 78655, worker pid - 78662
-    2016-03-19 18:55:53+0800 [-] write worker 78660 log into /tmp/trbctl-worker-1.log
-    2016-03-19 18:55:53+0800 [-] write worker 78659 log into /tmp/trbctl-worker-0.log
-    2016-03-19 18:55:53+0800 [-] write worker 78661 log into /tmp/trbctl-worker-2.log
-    2016-03-19 18:55:53+0800 [-] write worker 78662 log into /tmp/trbctl-worker-3.log
+
+    benckmark worker created! master pid - 78655, worker pid - 78659
+    benckmark worker created! master pid - 78655, worker pid - 78660
+    benckmark worker created! master pid - 78655, worker pid - 78661
+    benckmark worker created! master pid - 78655, worker pid - 78662
+    write worker 78660 log into /tmp/trbctl-worker-1.log
+    write worker 78659 log into /tmp/trbctl-worker-0.log
+    write worker 78661 log into /tmp/trbctl-worker-2.log
+    write worker 78662 log into /tmp/trbctl-worker-3.log
     ...........
     ...........
     ...........
     ...........
     ...........
     ...........
-    2016-03-19 18:56:26+0800 [-]  ------------------ radius auth benchmark statistics result ----------------------
-    2016-03-19 18:56:26+0800 [-]  -
-    2016-03-19 18:56:26+0800 [-]  - Benchmark params
-    2016-03-19 18:56:26+0800 [-]  -
-    2016-03-19 18:56:26+0800 [-]  - Client platform                   :  Darwin-15.3.0-x86_64-i386-64bit, x86_64
-    2016-03-19 18:56:26+0800 [-]  - Python implement, version         :  PyPy, 2.7.9
-    2016-03-19 18:56:26+0800 [-]  - Radius server  address            :  127.0.0.1
-    2016-03-19 18:56:26+0800 [-]  - Radius Server auth port           :  1812
-    2016-03-19 18:56:26+0800 [-]  - Raduius share secret              :  secret
-    2016-03-19 18:56:26+0800 [-]  - Auth Request total                :  10000
-    2016-03-19 18:56:26+0800 [-]  - Concurrency level                 :  100
-    2016-03-19 18:56:26+0800 [-]  - Worker Process num                :  4
-    2016-03-19 18:56:26+0800 [-]  - All Requests timeout              :  1000 sec
-    2016-03-19 18:56:26+0800 [-]  - Stat data interval                :  5 sec
-    2016-03-19 18:56:26+0800 [-]  - Send request rate                 :  200/sec
-    2016-03-19 18:56:26+0800 [-]  -
-    2016-03-19 18:56:26+0800 [-]  - Time data statistics
-    2016-03-19 18:56:26+0800 [-]  -
-    2016-03-19 18:56:26+0800 [-]  - Current stat datetime             :  Sat Mar 19 18:56:26 2016
-    2016-03-19 18:56:26+0800 [-]  - Current sent request              :  10000
-    2016-03-19 18:56:26+0800 [-]  - Current received response         :  10000
-    2016-03-19 18:56:26+0800 [-]  - Current accepts response          :  9981
-    2016-03-19 18:56:26+0800 [-]  - Current rejects response          :  19
-    2016-03-19 18:56:26+0800 [-]  - Current error response            :  0
-    2016-03-19 18:56:26+0800 [-]  - Current requests per second       :  236.072818989, cast 1.12677097321 sec
-    2016-03-19 18:56:26+0800 [-]  - Current max requests per second   :  439.310067127, cast 5.01923394203 sec
-    2016-03-19 18:56:26+0800 [-]  - Current time per request          :  4.23598110228 ms
-    2016-03-19 18:56:26+0800 [-]  - Current min time per request      :  2.27629657235 ms
-    2016-03-19 18:56:26+0800 [-]  - Current max time per request      :  38.7394464933 ms
-    2016-03-19 18:56:26+0800 [-]  - Current Cast total seconds        :  31.2822549343 sec
-    2016-03-19 18:56:26+0800 [-]  ---------------------------------------------------------------------------------    
+    ------------------ radius auth benchmark statistics result ----------------------
+    -
+    - Benchmark params
+    -
+    - Client platform                   :  Darwin-15.3.0-x86_64-i386-64bit, x86_64
+    - Python implement, version         :  PyPy, 2.7.9
+    - Radius server  address            :  127.0.0.1
+    - Radius Server auth port           :  1812
+    - Raduius share secret              :  secret
+    - Auth Request total                :  10000
+    - Concurrency level                 :  100
+    - Worker Process num                :  4
+    - All Requests timeout              :  1000 sec
+    - Stat data interval                :  5 sec
+    - Send request rate                 :  200/sec
+    -
+    - Time data statistics
+    -
+    - Current stat datetime             :  Sat Mar 19 18:56:26 2016
+    - Current sent request              :  10000
+    - Current received response         :  10000
+    - Current accepts response          :  9981
+    - Current rejects response          :  19
+    - Current error response            :  0
+    - Current requests per second       :  236.072818989, cast 1.12677097321 sec
+    - Current max requests per second   :  439.310067127, cast 5.01923394203 sec
+    - Current time per request          :  4.23598110228 ms
+    - Current min time per request      :  2.27629657235 ms
+    - Current max time per request      :  38.7394464933 ms
+    - Current Cast total seconds        :  31.2822549343 sec
+    ---------------------------------------------------------------------------------    
 
 
 
