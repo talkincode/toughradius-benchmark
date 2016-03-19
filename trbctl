@@ -5,9 +5,24 @@ choosereactor.install_optimal_reactor(False)
 from twisted.internet import reactor
 from twisted.internet import utils
 from twisted.python import log
-import argparse,sys,os
+import argparse,sys,os,signal
 sys.path.insert(0,os.path.split(__file__)[0])
-from toughbt import auth_master,auth_worker,mpp
+from toughbt import auth_master,auth_worker,mputils
+
+class Logger:
+
+    def info(self,msg):
+        print msg
+
+    def error(self, msg):
+        print msg
+
+def reactor_run():
+    def ExitHandler(signum, stackframe):
+        print "Got signal: %s" % signum
+        reactor.callFromThread(reactor.stop)
+    signal.signal(signal.SIGKILL, ExitHandler)
+    reactor.run()
 
 def exit(parser,status, msg=''):
     print (msg)
@@ -52,9 +67,9 @@ def main():
     args = parser.parse_args(sys.argv[1:])
     if args.auth:
         if args.master:
+            mp = mputils.MP(Logger(),args.verbosity)
             total_requests = (args.requests/args.fork)*args.fork
             per_requests = args.requests/args.fork
-            log.startLogging(sys.stdout)
             auth_master.BenchmarkMaster(args.server,args.port,args.secret,
                 total_requests,args.concurrency, args.username,args.password,
                 args.verbosity,args.timeout,args.fork,args.interval,args.rate)
@@ -73,22 +88,20 @@ def main():
                 '-t',str(args.timeout)
             ]
             for i in range(args.fork):
-                reactor.spawnProcess(mpp.MPProtocol(),cmd,_args,path=path, env={"LOGID":str(i)})
+                mp.spawn("worker",cmd,_args,path=path, env={"LOGID":str(i)})
 
         elif args.worker:
+            log.startLogging(sys.stdout)
             auth_worker.BenchmarkWorker(args.server,args.port,args.secret,
                 args.requests,args.concurrency, args.username,
                 args.password,args.verbosity,args.timeout,args.rate)
         
-        try:
-            reactor.run()
-        except KeyboardInterrupt:
-            print "Interrupted by keyboard. Exiting."
-            def onkill(val):
-                print 'exit',val;
-                sys.exit(0) 
-            d = utils.getProcessValue('ps',['ps','aux','|' "grep",__file__,"|","xargs","kill"])
-            d.addCallback(onkill)
+        def shutdown():
+            mp.killall()
+
+        reactor.addSystemEventTrigger('before', 'shutdown', shutdown)
+        reactor_run()
+
         
     else:
         parser.print_help()
