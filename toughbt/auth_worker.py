@@ -68,8 +68,11 @@ class RadAuthClient(protocol.DatagramProtocol):
 class BenchmarkWorker:
 
     def __init__(self,server,port,secret,requests,concurrency,username,password, verb=False,timeout=600,rate=1000):
+        logname = "/tmp/trbctl-worker-{}.log".format(os.environ.get("LOGID",0))
+        log.startLogging(open(logname,'w'))
         self.timeout = timeout
         self.pusher = ZmqPushConnection(ZmqFactory(), ZmqEndpoint('connect', 'ipc:///tmp/toughbt-message'))
+        self.pusher.push("write worker %s log into %s" % (os.getpid(),logname))
         log.msg("init BenchmarkWorker pusher : %s " % repr(self.pusher))
         # define client cycle list
         raddict = dictionary.Dictionary(os.path.join(os.path.dirname(__file__),"dictionary"))

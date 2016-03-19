@@ -6,6 +6,7 @@ from twisted.python import log
 import argparse,sys,os
 from txradius import message
 from txradius.radius import dictionary,packet
+import platform
 import itertools
 import random
 import time
@@ -64,37 +65,43 @@ class AuthStatCounter:
             self.max_per_cast = _sectimes
     
         result.append("\n ------------------ radius auth benchmark statistics result ----------------------")
-        result.append(" - ---- testing params")
+        result.append(" - ")
+        result.append(" - Benchmark params")
+        result.append(" - ")
         for m in self.tparams:
             result.append(m)
-        result.append(" - ---- time data statistics")
-        result.append(" - Current stat datetime             : %s"% time.ctime())
-        result.append(" - Current sent request              : %s"% self.requests)
-        result.append(" - Current received response         : %s"% self.replys)
-        result.append(" - Current accepts response          : %s"% self.accepts)
-        result.append(" - Current rejects response          : %s"% self.rejects)
-        result.append(" - Current error response            : %s"% self.errors)
-        result.append(" - Current requests per second       : %s, cast %s sec"%(_percount,_sectimes))
-        result.append(" - Current max requests per second   : %s, cast %s sec"%(self.max_per,self.max_per_cast))
-        result.append(" - Current time per request          : %s ms"%(_time_per))
-        result.append(" - Current min time per request      : %s ms"%(self.min_time_per))
-        result.append(" - Current max time per request      : %s ms"%(self.max_time_per))
-        result.append(" - Current Cast total seconds        : %s"%(self.lasttime-self.starttime))
+        result.append(" - ")
+        result.append(" - Time data statistics")
+        result.append(" - ")
+        result.append(" - Current stat datetime             :  %s"% time.ctime())
+        result.append(" - Current sent request              :  %s"% self.requests)
+        result.append(" - Current received response         :  %s"% self.replys)
+        result.append(" - Current accepts response          :  %s"% self.accepts)
+        result.append(" - Current rejects response          :  %s"% self.rejects)
+        result.append(" - Current error response            :  %s"% self.errors)
+        result.append(" - Current requests per second       :  %s, cast %s sec"%(_percount,_sectimes))
+        result.append(" - Current max requests per second   :  %s, cast %s sec"%(self.max_per,self.max_per_cast))
+        result.append(" - Current time per request          :  %s ms"%(_time_per))
+        result.append(" - Current min time per request      :  %s ms"%(self.min_time_per))
+        result.append(" - Current max time per request      :  %s ms"%(self.max_time_per))
+        result.append(" - Current Cast total seconds        :  %s sec"%(self.lasttime-self.starttime))
         result.append(" ---------------------------------------------------------------------------------\n")
         return result
 
 class BenchmarkMaster:
 
     def __init__(self,server,port,secret,requests,concurrency,username,password,
-        verb=False,timeout=30,fork=1,interval=2,rate=1000):
+        verb=False,timeout=30,forknum=1,interval=2,rate=1000):
         self.interval = interval
         tparams = [
-            ' - RadiusServer                      :  %s'% server,
-            ' - AuthPort                          :  %s'% port,
-            ' - ShareSecret                       :  %s'% secret,
-            ' - Request total                     :  %s'% requests,
+            ' - Client platform                   :  %s, %s'% (platform.platform(),platform.machine()),
+            ' - Python implement, version         :  %s, %s'% (platform.python_implementation(), platform.python_version()),
+            ' - Radius server  address            :  %s'% server,
+            ' - Radius Server auth port           :  %s'% port,
+            ' - Raduius share secret              :  %s'% secret,
+            ' - Auth Request total                :  %s'% requests,
             ' - Concurrency level                 :  %s'% concurrency,
-            ' - Worker Process num                :  %s'% fork,
+            ' - Worker Process num                :  %s'% forknum,
             ' - All Requests timeout              :  %s sec'% timeout,
             ' - Stat data interval                :  %s sec'% interval,
             ' - Send request rate                 :  %s/sec'% rate,

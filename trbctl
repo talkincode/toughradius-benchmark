@@ -50,7 +50,6 @@ def main():
         help='Max send message rate , default 5000 per process')
     parser.add_argument('-conf', '--conf', type=str, default='', dest='conf', help='Radius testing config file')
     args = parser.parse_args(sys.argv[1:])
-    print args
     if args.auth:
         if args.master:
             total_requests = (args.requests/args.fork)*args.fork
@@ -74,10 +73,9 @@ def main():
                 '-t',str(args.timeout)
             ]
             for i in range(args.fork):
-                reactor.spawnProcess(mpp.MPProtocol(),cmd,_args,path=path, env={})
+                reactor.spawnProcess(mpp.MPProtocol(),cmd,_args,path=path, env={"LOGID":str(i)})
 
         elif args.worker:
-            log.startLogging(open('/tmp/trbctl-worker-%s.log'%(os.getpid()%args.fork),'w'))
             auth_worker.BenchmarkWorker(args.server,args.port,args.secret,
                 args.requests,args.concurrency, args.username,
                 args.password,args.verbosity,args.timeout,args.rate)
