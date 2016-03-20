@@ -89,6 +89,8 @@ def main():
             ]
             for i in range(args.fork):
                 mp.spawn("worker",cmd,_args,path=path, env={"LOGID":str(i)})
+                
+            reactor.addSystemEventTrigger('before', 'shutdown', lambda : mp.killall())
 
         elif args.worker:
             log.startLogging(sys.stdout)
@@ -96,10 +98,7 @@ def main():
                 args.requests,args.concurrency, args.username,
                 args.password,args.verbosity,args.timeout,args.rate)
         
-        def shutdown():
-            mp.killall()
-
-        reactor.addSystemEventTrigger('before', 'shutdown', shutdown)
+        
         reactor_run()
 
         
