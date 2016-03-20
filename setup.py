@@ -42,6 +42,7 @@ setup(name='toughbt',
       keywords=['radius', 'AAA','authentication','accounting','authorization','toughradius','benchmark'],
       zip_safe=True,
       include_package_data=True,
+      eager_resources=['toughbt'],
       scripts=["trbctl"],
       install_requires=install_requires,
 )
