@@ -16,7 +16,7 @@ toughbt 是一个基于Python/twisted开发的 radius 服务性能测试工具�
 
 ## 使用说明
 
-    $ pypy trbctl -h
+    $ trbctl -h
 
     usage: trbctl [-h] [-auth] [-acct] [-m] [-w] [-s SERVER] [-P PORT] [-e SECRET]
               [-u USERNAME] [-p PASSWORD] [-n REQUESTS] [-c CONCURRENCY] [-v]
